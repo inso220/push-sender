@@ -5,14 +5,19 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.Message
+import com.google.gson.Gson
 import java.io.FileInputStream
 
 
 fun main() {
 
     val post = Post(
-//        author = "Bob",
-        content = "content"
+        author = "Bob",
+        content = """
+            line 1
+            line 2
+            line 3
+        """.trimMargin()
     )
 
     val options = FirebaseOptions.builder()
@@ -21,20 +26,9 @@ fun main() {
 
     FirebaseApp.initializeApp(options)
 
-//    val message = Message.builder()
-//        .putData("action", "LIKE")
-//        .putData("content", """{
-//          "userId": 1,
-//          "userName": "Vasiliy",
-//          "postId": 2,
-//          "postAuthor": "Netology"
-//        }""".trimIndent())
-//        .setToken(token)
-//        .build()
-
     val message = Message.builder()
         .putData("action", "POST")
-        .putData("content", post.content)
+        .putData("postContent", Gson().toJson(post))
         .setToken(token)
         .build()
 
